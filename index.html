@@ -1,61 +1,75 @@
 <!DOCTYPE html>
 <html lang="hi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sourabh AI Cartoon</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div class="app-shell">
-      <header class="topbar">
-        <div>
-          <p class="eyebrow">Sourabh AI</p>
-          <h1>🎬 Sourabh AI Cartoon</h1>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sourabh AI Cartoon Maker</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="header-content">
+        <p class="eyebrow">Sourabh AI</p>
+        <h1>🎬 Sourabh AI Cartoon</h1>
+        <p class="subtitle">अपनी कहानी लिखो और कार्टून देखो!</p>
+      </div>
+    </header>
+
+    <main class="main-panel">
+      <section class="story-box card">
+        <label for="storyInput">📖 अपनी कहानी लिखो:</label>
+        <textarea id="storyInput" rows="7" placeholder="जैसे: एक छोटा हाथी जंगल के बीच में खेल रहा था। अचानक उसे एक जलती हुई आग की लपट दिखाई दी। हाथी ने धैर्य से काम लिया और अपने दोस्तों की मदद से पानी लाकर आग बुझाई। सभी ने मिलकर एक खुशहाल जंगल बनाया।"></textarea>
+        <div class="quick-actions">
+          <button id="sampleBtn" class="secondary" type="button">📝 नमूना कहानी</button>
+          <button id="generateBtn" class="primary" type="button">🎨 दृश्य बनाएं</button>
         </div>
-      </header>
+      </section>
 
-      <main class="main-panel">
-        <section class="story-box card">
-          <label for="storyInput">अपनी कहानी लिखें</label>
-          <textarea id="storyInput" rows="7" placeholder="जैसे: एक छोटा हाथी जंगल में एक अप्सरा से मिलता है..."></textarea>
-          <div class="quick-actions">
-            <button id="sampleBtn" class="secondary">नमूना कहानी</button>
-            <button id="generateBtn" class="primary">कहानी से दृश्य बनाएं</button>
-          </div>
-        </section>
+      <section class="demo-notice card">
+        <div class="notice-icon">ℹ️</div>
+        <div class="notice-content">
+          <strong>डेमो मोड:</strong> यह प्रोटोटाइप AI वीडियो जनरेशन का सरल अनुकरण है। वास्तविक AI वीडियो के लिए API कुंजी और बाहरी सेवा की आवश्यकता होती है।
+        </div>
+      </section>
 
-        <section class="service-status card">
-          <h2>सर्विस स्थिति</h2>
-          <ul>
-            <li><strong>प्रोटोटाइप:</strong> लोकल ब्राउज़र में काम करता है</li>
-            <li><strong>वॉयस:</strong> ब्राउज़र Hindi TTS (कोई API key आवश्यक नहीं)</li>
-            <li><strong>एआई वीडियो:</strong> अभी डेमो मोड में, वास्तविक API integration के लिए key और paid service की आवश्यकता होगी</li>
-          </ul>
-        </section>
+      <section class="service-status card">
+        <h2>सेवा स्थिति:</h2>
+        <ul>
+          <li>✅ <strong>स्टोरी इनपुट:</strong> सक्रिय</li>
+          <li>✅ <strong>दृश्य जनरेशन:</strong> स्थानीय डेमो</li>
+          <li>✅ <strong>हिंदी वॉयस:</strong> ब्राउज़र TTS (मुफ़्त)</li>
+          <li>⚠️ <strong>AI वीडियो:</strong> API सेवा आवश्यक</li>
+          <li>⚠️ <strong>क्लाउड स्टोरेज:</strong> उपलब्ध नहीं</li>
+        </ul>
+      </section>
 
-        <section class="scene-box card">
-          <div class="section-head">
-            <h2>दृश्य सूची</h2>
-            <span id="sceneCount">0 दृश्य</span>
-          </div>
-          <div id="sceneList" class="scene-list"></div>
-        </section>
+      <section class="scene-box card">
+        <div class="section-head">
+          <h2>📺 दृश्य सूची:</h2>
+          <span id="sceneCount">0 दृश्य</span>
+        </div>
+        <div id="sceneList" class="scene-list"></div>
+      </section>
 
-        <section class="preview-box card">
-          <div class="section-head">
-            <h2>वीडियो प्रीव्यू</h2>
-          </div>
-          <canvas id="previewCanvas" width="720" height="1280"></canvas>
-          <div class="preview-actions">
-            <button id="previewBtn" class="primary">प्रीव्यू शुरू करें</button>
-            <button id="downloadBtn" class="secondary">वीडियो डाउनलोड</button>
-          </div>
-          <p id="statusText" class="status-text">डेमो मोड तैयार है।</p>
-        </section>
-      </main>
-    </div>
+      <section class="preview-box card">
+        <div class="section-head">
+          <h2>🎥 वीडियो पूर्वावलोकन:</h2>
+        </div>
+        <canvas id="previewCanvas" width="720" height="1280"></canvas>
+        <div class="preview-actions">
+          <button id="previewBtn" class="primary" type="button">▶️ पूर्वावलोकन शुरू करें</button>
+          <button id="downloadBtn" class="secondary" type="button">⬇️ वीडियो डाउनलोड करें</button>
+        </div>
+        <p id="statusText" class="status-text">तैयारी में...</p>
+      </section>
 
-    <script src="app.js"></script>
-  </body>
+      <footer class="footer">
+        <p>Sourabh AI Cartoon Maker v1.0 | डेमो प्रोटोटाइप</p>
+      </footer>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
 </html>

@@ -1,0 +1,274 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-1: #f6edff;
+  --bg-2: #eef7ff;
+  --surface: #ffffff;
+  --surface-2: #f7f1ff;
+  --primary: #7b2cbf;
+  --primary-dark: #5b1b9c;
+  --secondary: #f0e9ff;
+  --text: #1c1831;
+  --muted: #635a7a;
+  --success: #1c9c62;
+  --danger: #b42318;
+  --border: #e5d5ff;
+  --shadow: 0 12px 30px rgba(101, 52, 156, 0.12);
+}
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+  color: var(--text);
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+}
+
+button, textarea {
+  font: inherit;
+}
+
+.app-shell {
+  width: 100%;
+  max-width: 480px;
+}
+
+.topbar {
+  margin-bottom: 14px;
+}
+
+.header-content {
+  padding: 4px 2px;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+h1 {
+  margin: 8px 0 0;
+  font-size: clamp(28px, 7vw, 36px);
+  line-height: 1.2;
+}
+
+.subtitle {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.main-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+.story-box label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+textarea {
+  width: 100%;
+  min-height: 150px;
+  resize: vertical;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #faf7ff;
+  padding: 12px 14px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+textarea:focus {
+  outline: 2px solid rgba(123, 44, 191, 0.16);
+  border-color: var(--primary);
+}
+
+.quick-actions,
+.preview-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+button {
+  flex: 1 1 140px;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+.primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #ffffff;
+}
+
+.secondary {
+  background: var(--secondary);
+  color: var(--primary-dark);
+}
+
+.demo-notice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f3ebff;
+  border-color: #e1d0ff;
+}
+
+.notice-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e8d9ff;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.notice-content {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.service-status h2,
+.scene-box h2,
+.preview-box h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.service-status ul {
+  margin: 12px 0 0;
+  padding-left: 20px;
+  color: var(--muted);
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+#sceneCount {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.scene-list {
+  display: grid;
+  gap: 10px;
+}
+
+.scene-item {
+  background: linear-gradient(135deg, #f8f2ff, #edf7ff);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.scene-item h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+
+.scene-item p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.preview-box {
+  overflow: hidden;
+}
+
+canvas {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: #f6efff;
+  margin-top: 12px;
+}
+
+.status-text {
+  margin: 12px 0 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--success);
+}
+
+.footer {
+  text-align: center;
+  padding-bottom: 10px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.footer p {
+  margin: 0;
+}
+
+@media (max-width: 420px) {
+  body {
+    padding: 12px;
+  }
+
+  .quick-actions,
+  .preview-actions {
+    flex-direction: column;
+  }
+
+  button {
+    width: 100%;
+  }
+}

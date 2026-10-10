@@ -16,7 +16,7 @@ const sampleStory = `एक छोटा हाथी जंगल के बी
 sampleBtn.addEventListener('click', () => {
   storyInput.value = sampleStory;
   statusText.textContent = 'नमूना कहानी तैयार है।';
-  statusText.style.color = '#129b59';
+  statusText.style.color = '#1c9c62';
 });
 
 generateBtn.addEventListener('click', () => {
@@ -24,14 +24,14 @@ generateBtn.addEventListener('click', () => {
 
   if (!story) {
     statusText.textContent = 'कृपया कहानी लिखें।';
-    statusText.style.color = '#b91c1c';
+    statusText.style.color = '#b42318';
     return;
   }
 
   const scenes = buildScenesFromStory(story);
   renderScenes(scenes);
   statusText.textContent = `${scenes.length} दृश्य तैयार हैं।`;
-  statusText.style.color = '#129b59';
+  statusText.style.color = '#1c9c62';
 });
 
 previewBtn.addEventListener('click', () => {
@@ -39,14 +39,14 @@ previewBtn.addEventListener('click', () => {
 
   if (!story) {
     statusText.textContent = 'प्रीव्यू शुरू करने से पहले कहानी लिखें।';
-    statusText.style.color = '#b91c1c';
+    statusText.style.color = '#b42318';
     return;
   }
 
   playNarration(story);
   renderPreviewAnimation(story);
   statusText.textContent = 'वीडियो प्रीव्यू चल रहा है...';
-  statusText.style.color = '#129b59';
+  statusText.style.color = '#1c9c62';
 });
 
 downloadBtn.addEventListener('click', async () => {
@@ -54,19 +54,19 @@ downloadBtn.addEventListener('click', async () => {
 
   if (!story) {
     statusText.textContent = 'डाउनलोड करने से पहले कहानी लिखें।';
-    statusText.style.color = '#b91c1c';
+    statusText.style.color = '#b42318';
     return;
   }
 
   if (!window.MediaRecorder) {
     statusText.textContent = 'इस ब्राउज़र में WebM डाउनलोड समर्थित नहीं है।';
-    statusText.style.color = '#b91c1c';
+    statusText.style.color = '#b42318';
     return;
   }
 
   try {
     statusText.textContent = 'वीडियो बनाया जा रहा है...';
-    statusText.style.color = '#129b59';
+    statusText.style.color = '#1c9c62';
 
     const blob = await exportCanvasVideo(story);
     const url = URL.createObjectURL(blob);
@@ -79,11 +79,11 @@ downloadBtn.addEventListener('click', async () => {
     URL.revokeObjectURL(url);
 
     statusText.textContent = 'वीडियो डाउनलोड शुरू हुआ।';
-    statusText.style.color = '#129b59';
+    statusText.style.color = '#1c9c62';
   } catch (error) {
     console.error(error);
     statusText.textContent = 'वीडियो डाउनलोड विफल हुआ। ब्राउज़र MediaRecorder की आवश्यकता है।';
-    statusText.style.color = '#b91c1c';
+    statusText.style.color = '#b42318';
   }
 });
 
@@ -126,7 +126,7 @@ function renderScenes(scenes) {
 function playNarration(story) {
   if (!('speechSynthesis' in window)) {
     statusText.textContent = 'इस ब्राउज़र में हिंदी वॉयस उपलब्ध नहीं है।';
-    statusText.style.color = '#b91c1c';
+    statusText.style.color = '#b42318';
     return;
   }
 
@@ -159,7 +159,7 @@ function renderPreviewAnimation(story) {
       previewFrameId = requestAnimationFrame(animationLoop);
     } else {
       statusText.textContent = 'प्रीव्यू समाप्त।';
-      statusText.style.color = '#129b59';
+      statusText.style.color = '#1c9c62';
     }
   }
 
@@ -295,8 +295,8 @@ function initializeDemo() {
   const initialScenes = buildScenesFromStory(sampleStory);
   renderScenes(initialScenes);
   drawScene(initialScenes[0], 0.5, 0, initialScenes.length);
-  statusText.textContent = 'डेमो प्रारंभ है।';
-  statusText.style.color = '#129b59';
+  statusText.textContent = 'डेमो प्रारंभ है। कहानी लिखें या नमूना कहानी का उपयोग करें।';
+  statusText.style.color = '#1c9c62';
 }
 
 initializeDemo();
