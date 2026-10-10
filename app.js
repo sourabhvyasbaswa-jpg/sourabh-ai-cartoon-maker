@@ -300,3 +300,4 @@ function initializeDemo() {
 }
 
 initializeDemo();
+console.log("Sourabh AI Cartoon Maker ready!");
