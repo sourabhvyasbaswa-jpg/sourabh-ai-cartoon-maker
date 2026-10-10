@@ -252,4 +252,5 @@ async function exportCanvasVideo(story) {
   const stream = canvas.captureStream(30);
   const mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
     ? 'video/webm;codecs=vp9'
-      
+      const mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
+    ? 'video/webm;codecs=vp9'
