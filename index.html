@@ -1,76 +1,85 @@
-DOCTYPE html>
+<!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sourabh AI Cartoon Maker</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sourabh AI Earn & Cartoon</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="app-shell">
-    <header class="topbar">
-      <div class="header-content">
-        <p class="eyebrow">Sourabh AI</p>
-        <h1>🎬 Sourabh AI Cartoon</h1>
-        <p class="subtitle">अपनी कहानी लिखो और कार्टून देखो!</p>
+
+<header class="topbar">
+  <h1>🚀 Sourabh AI</h1>
+  <p>AI Tasks + Cartoon Creator</p>
+</header>
+
+<main class="container">
+
+  <section class="card">
+    <h2>नमस्ते! 👋</h2>
+    <p>AI Tasks का अभ्यास करो और अपनी कार्टून कहानियाँ बनाओ।</p>
+    <p class="notice">
+      यह शुरुआती प्रोटोटाइप है। अभी कोई वास्तविक भुगतान प्राप्त नहीं हुआ है।
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>💰 कमाई का रिकॉर्ड</h2>
+
+    <div class="earnings-grid">
+      <div class="earning-box">
+        <h3>🤖 AI Tasks</h3>
+        <p id="taskEarnings">₹0.00</p>
       </div>
-    </header>
 
-    <main class="main-panel">
-      <section class="story-box card">
-        <label for="storyInput">📖 अपनी कहानी लिखो:</label>
-        <textarea id="storyInput" rows="7" placeholder="जैसे: एक छोटा हाथी जंगल के बीच में खेल रहा था। अचानक उसे एक जलती हुई आग की लपट दिखाई दी। हाथी ने धैर्य से काम लिया और अपने दोस्तों की मदद से पानी लाकर आग बुझाई। सभी ने मिलकर एक खुशहाल जंगल बनाया।"></textarea>
-        <div class="quick-actions">
-          <button id="sampleBtn" class="secondary" type="button">📝 नमूना कहानी</button>
-          <button id="generateBtn" class="primary" type="button">🎨 दृश्य बनाएं</button>
-        </div>
-      </section>
+      <div class="earning-box">
+        <h3>🎬 Cartoon</h3>
+        <p id="cartoonEarnings">₹0.00</p>
+      </div>
+    </div>
 
-      <section class="demo-notice card">
-        <div class="notice-icon">ℹ️</div>
-        <div class="notice-content">
-          <strong>डेमो मोड:</strong> यह प्रोटोटाइप AI वीडियो जनरेशन का सरल अनुकरण है। वास्तविक AI वीडियो के लिए API कुंजी और बाहरी सेवा की आवश्यकता होती है।
-        </div>
-      </section>
+    <div class="total-box">
+      <h3>कुल दर्ज कमाई</h3>
+      <p id="totalEarnings">₹0.00</p>
+    </div>
 
-      <section class="service-status card">
-        <h2>सेवा स्थिति:</h2>
-        <ul>
-          <li>✅ <strong>स्टोरी इनपुट:</strong> सक्रिय</li>
-          <li>✅ <strong>दृश्य जनरेशन:</strong> स्थानीय डेमो</li>
-          <li>✅ <strong>हिंदी वॉयस:</strong> ब्राउज़र TTS (मुफ़्त)</li>
-          <li>⚠️ <strong>AI वीडियो:</strong> API सेवा आवश्यक</li>
-          <li>⚠️ <strong>क्लाउड स्टोरेज:</strong> उपलब्ध नहीं</li>
-        </ul>
-      </section>
+    <p class="notice">
+      केवल सत्यापित वास्तविक भुगतान ही कमाई में जोड़े जाने चाहिए।
+    </p>
+  </section>
 
-      <section class="scene-box card">
-        <div class="section-head">
-          <h2>📺 दृश्य सूची:</h2>
-          <span id="sceneCount">0 दृश्य</span>
-        </div>
-        <div id="sceneList" class="scene-list"></div>
-      </section>
+  <section class="card">
+    <h2>🤖 AI Task Practice</h2>
+    <p>AI के जवाब की गुणवत्ता जाँचने का अभ्यास करो।</p>
 
-      <section class="preview-box card">
-        <div class="section-head">
-          <h2>🎥 वीडियो पूर्वावलोकन:</h2>
-        </div>
-        <canvas id="previewCanvas" width="720" height="1280"></canvas>
-        <div class="preview-actions">
-          <button id="previewBtn" class="primary" type="button">▶️ पूर्वावलोकन शुरू करें</button>
-          <button id="downloadBtn" class="secondary" type="button">⬇️ वीडियो डाउनलोड करें</button>
-        </div>
-        <p id="statusText" class="status-text">तैयारी में...</p>
-      </section>
+    <label for="aiAnswer">AI का जवाब लिखो:</label>
+    <textarea id="aiAnswer" rows="4"
+      placeholder="यहाँ AI का जवाब लिखें..."></textarea>
 
-      <footer class="footer">
-        <p>Sourabh AI Cartoon Maker v1.0 | डेमो प्रोटोटाइप</p>
-      </footer>
-    </main>
-  </div>
+    <button id="checkAnswerBtn">जाँच का अभ्यास करें</button>
 
-  <script src="app.js"></script>
-</body>
-      </html>
-      
+    <p id="taskMessage" aria-live="polite">
+      अभ्यास शुरू करने के लिए जवाब लिखो।
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>🎬 Cartoon Maker</h2>
+
+    <label for="storyInput">अपनी कहानी लिखो:</label>
+    <textarea id="storyInput" rows="5"
+      placeholder="एक जंगल में हाथी और बंदर दोस्त थे..."></textarea>
+
+    <button id="generateBtn">🎨 कहानी के दृश्य बनाओ</button>
+    <div id="sceneList" class="scene-list"></div>
+
+    <button id="speakBtn" class="secondary">🔊 कहानी सुनो</button>
+
+    <p class="notice">
+      अभी कहानी के टेक्स्ट दृश्य बनेंगे। वास्तविक AI चित्र और वीडियो के लिए
+      बाहरी AI सेवा जोड़नी होगी।
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>
