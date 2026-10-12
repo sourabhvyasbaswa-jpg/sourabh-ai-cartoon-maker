@@ -1,3 +1,23 @@
+  window.speechSynthesis.speak(speech);
+});
+
+// AI जवाब की जाँच का अभ्यास
+checkAnswerBtn.addEventListener("click", function () {
+  const answer = aiAnswer.value.trim();
+
+  if (!answer) {
+    taskMessage.textContent = "पहले AI का जवाब लिखो।";
+    aiAnswer.focus();
+    return;
+  }
+
+  taskMessage.textContent =
+    "अभ्यास पूरा हुआ! जवाब की सटीकता, स्पष्टता और उपयोगिता जाँचो।";
+
+  taskStatus.textContent = "अभ्यास पूरा — भुगतान वाला टास्क नहीं";
+});
+
+console.log("Sourabh AI Earn & Cartoon शुरू हो गया!");
 const storyInput = document.getElementById("storyInput");
 const generateBtn = document.getElementById("generateBtn");
 const sceneList = document.getElementById("sceneList");
