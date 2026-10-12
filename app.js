@@ -114,3 +114,17 @@ checkAnswerBtn.addEventListener("click", function () {
 });
 
 console.log("Sourabh AI Earn & Cartoon शुरू हो गया!");
+const dinosaurBtn = document.getElementById("dinosaurBtn");
+
+if (dinosaurBtn) {
+  dinosaurBtn.addEventListener("click", function () {
+    storyInput.value = `राहुल जंगल में रास्ता भटक गया।
+अचानक एक विशाल टी-रेक्स डायनासोर उसके सामने आ गया।
+डायनासोर ने जोर से दहाड़ लगाई और राहुल के पीछे दौड़ने लगा।
+राहुल ने अपनी समझदारी से डायनासोर को दलदल की तरफ आकर्षित किया।
+डायनासोर कीचड़ में फँस गया और राहुल सुरक्षित जगह पहुँच गया।
+राहुल ने सीखा कि मुश्किल समय में समझदारी सबसे बड़ी ताकत है।`;
+
+    storyInput.focus();
+  });
+}
