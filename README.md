@@ -1,72 +1,37 @@
-# Sourabh AI Cartoon
+# Sourabh AI Earn & Cartoon
 
-A simple mobile-friendly prototype for a Hindi cartoon story-to-video app. This project runs directly in the browser and is suitable for Android-friendly mobile screens.
+A mobile-friendly web app prototype for Hindi AI task practice and cartoon story creation.
 
-## Features included
+## Features
 
-- Hindi story input box
-- Auto-generated cartoon scene list from the story
-- Hindi narration using the browser's Text-to-Speech engine
-- Video preview on a local canvas animation
-- Download finished video as a `.webm` file
-- Mobile-first design for Android-style usage
+### AI Task Practice
+- Practice Hindi customer-support responses.
+- Learn to evaluate AI answers.
+- Track practice status.
 
-## Important: real AI video generation requires API or paid services
+### Cartoon Story Creator
+- Write stories in Hindi.
+- Split stories into individual scenes.
+- Listen to stories using browser text-to-speech.
+- Use a mobile-friendly interface.
 
-This prototype does not call any paid AI video service or require an API key to work in demo mode.
+## Earnings
 
-However, for a real production version, these features would require external services:
+This prototype does not generate income automatically.
+The earnings dashboard is for demonstration purposes only.
+Real income requires legitimate paid tasks, clients, or other monetization opportunities.
 
-1. AI video scene generation
-   - Examples: Runway, Pika, Kling, Replicate, OpenAI video tools, or custom model endpoints
-   - Usually requires an API key and pay-per-generation usage
+## Video Generation
 
-2. Hindi voice narration
-   - Examples: Google Cloud Text-to-Speech, Azure Speech, ElevenLabs
-   - Usually requires an API key and sometimes a paid plan
+This version does not generate complete AI cartoon videos.
+Real AI video generation requires a suitable video-generation service or model.
 
-3. Cloud storage or hosting
-   - Needed if you want to upload and share generated videos online
-   - Often includes hosting costs
+## How to Run
 
-## This prototype uses no paid services
+Open `index.html` in a modern browser.
 
-- Browser SpeechSynthesis for Hindi narration
-- Browser canvas animation and MediaRecorder for preview/download
-- No external API calls are made
-
-## How to run
-
-Because this is a static app, you can simply open `index.html` in a browser.
-
-For a cleaner local preview, you can also run a simple local server:
+For local testing on a computer with Python installed:
 
 ```bash
 cd sourabh-ai-cartoon-maker
 python3 -m http.server 8000
-```
-
-Then open:
-
-```text
-http://localhost:8000
-```
-
-## Notes
-
-- Some browsers may restrict speech or media recording behavior if opened from a file path instead of a local server.
-- For best results, use a modern Chrome/Edge browser.
-- The download output is in `.webm` format, which is a browser-supported video format for the prototype.
-
-## Suggested next upgrades
-
-- Connect to a real AI video API with user-provided keys
-- Add a backend to store videos and user projects
-- Add Hindi text cleanup and scene summarization
-- Add character and background style selection
-- Add login and project history for users
-
-## License
-
-This project is for prototype/demo use.
-
