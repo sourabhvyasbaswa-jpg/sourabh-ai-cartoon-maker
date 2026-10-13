@@ -32,27 +32,60 @@ let uploadedImages = [];
 let videoURL = null;
 
 function splitStory(story) {
-  return story
-    .split(/[।.!?\n]+/)
+  const text = story.trim();
+
+  if (!text) return [];
+
+  // यदि कहानी में सीन 1, सीन 2 जैसे शीर्षक हैं,
+  // तो प्रत्येक सीन को अलग रखें।
+  const namedScenes = text
+    .split(/(?=सीन\s*\d+\s*[:：])/i)
     .map(s => s.trim())
     .filter(Boolean);
+
+  if (namedScenes.length > 1) {
+    return namedScenes;
+  }
+
+  // अन्य कहानियों को वाक्यों में बाँटें।
+  const sentences = text
+    .split(/(?<=[।.!?])\s+|\n+/)
+    .map(s => s.trim())
+    .filter(Boolean);
+
+  if (sentences.length <= 6) {
+    return sentences;
+  }
+
+  // बहुत सारे वाक्यों को अधिकतम लगभग 6 दृश्यों में बाँटें।
+  const count = 6;
+  const scenes = [];
+  const groupSize = Math.ceil(sentences.length / count);
+
+  for (let i = 0; i < sentences.length; i += groupSize) {
+    scenes.push(
+      sentences.slice(i, i + groupSize).join(" ")
+    );
+  }
+
+  return scenes;
 }
 
-// कहानी का उदाहरण
+// उदाहरण कहानी
 dinosaurBtn.addEventListener("click", () => {
   storyInput.value = [
-    "राहुल जंगल में रास्ता भटक गया।",
-    "अचानक एक विशाल टी-रेक्स डायनासोर उसके सामने आ गया।",
-    "डायनासोर ने जोर से दहाड़ लगाई और राहुल के पीछे दौड़ने लगा।",
-    "राहुल ने समझदारी से डायनासोर को दलदल की तरफ आकर्षित किया।",
-    "डायनासोर कीचड़ में फँस गया और राहुल सुरक्षित जगह पहुँच गया।",
-    "राहुल ने सीखा कि मुश्किल समय में समझदारी बड़ी ताकत है।"
-  ].join("\n");
+    "सीन 1: राहुल घने जंगल में घूम रहा था।",
+    "सीन 2: अचानक एक विशाल टी-रेक्स डायनासोर सामने आ गया।",
+    "सीन 3: डायनासोर राहुल के पीछे दौड़ने लगा।",
+    "सीन 4: राहुल ने चालाकी से डायनासोर को दलदल की ओर मोड़ दिया।",
+    "सीन 5: डायनासोर कीचड़ में फँस गया और राहुल ने मदद बुलाई।",
+    "सीन 6: राहुल ने सीखा कि समझदारी सबसे बड़ी ताकत है।"
+  ].join("\n\n");
 
   storyInput.focus();
 });
 
-// उपयोगकर्ता द्वारा दिए चित्र पढ़ना
+// चित्र अपलोड करना
 imageUpload.addEventListener("change", () => {
   uploadedImages.forEach(item => URL.revokeObjectURL(item.url));
   uploadedImages = [];
@@ -71,17 +104,20 @@ imageUpload.addEventListener("change", () => {
     : "कोई चित्र नहीं चुना गया।";
 });
 
-// दृश्य तैयार करना
-generateBtn.addEventListener("click", () => {
-  const story = storyInput.value.trim();
+// चित्र लोड करना
+function loadImage(url) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
 
-  if (!story) {
-    alert("पहले कहानी लिखें।");
-    storyInput.focus();
-    return;
-  }
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error("चित्र लोड नहीं हुआ।"));
 
-  currentScenes = splitStory(story);
+    img.src = url;
+  });
+}
+
+// दृश्य सूची दिखाना
+function renderScenes() {
   sceneList.replaceChildren();
 
   currentScenes.forEach((sentence, index) => {
@@ -96,10 +132,18 @@ generateBtn.addEventListener("click", () => {
 
     card.append(title, description);
 
-    if (uploadedImages[index]) {
+    const item = uploadedImages[index];
+
+    if (item) {
       const img = document.createElement("img");
-      img.src = uploadedImages[index].url;
-      img.alt = "अपलोड किया गया कार्टून चित्र";
+
+      img.src = item.url;
+      img.alt = "कार्टून दृश्य " + (index + 1);
+      img.style.width = "100%";
+      img.style.maxWidth = "400px";
+      img.style.height = "auto";
+      img.style.borderRadius = "12px";
+
       card.appendChild(img);
     }
 
@@ -107,10 +151,23 @@ generateBtn.addEventListener("click", () => {
   });
 
   cartoonStatus.textContent =
-    currentScenes.length + " टेक्स्ट दृश्य तैयार हैं।";
+    currentScenes.length + " दृश्य तैयार हैं।";
+}
+
+generateBtn.addEventListener("click", () => {
+  const story = storyInput.value.trim();
+
+  if (!story) {
+    alert("पहले अपनी कहानी लिखें।");
+    storyInput.focus();
+    return;
+  }
+
+  currentScenes = splitStory(story);
+  renderScenes();
 });
 
-// ब्राउज़र में कहानी सुनना
+// कहानी सुनना
 speakBtn.addEventListener("click", () => {
   const story = storyInput.value.trim();
 
@@ -126,11 +183,12 @@ speakBtn.addEventListener("click", () => {
 
   speechSynthesis.cancel();
 
-  const speech = new SpeechSynthesisUtterance(story);
-  speech.lang = "hi-IN";
-  speech.rate = 0.9;
+  const utterance = new SpeechSynthesisUtterance(story);
 
-  speechSynthesis.speak(speech);
+  utterance.lang = "hi-IN";
+  utterance.rate = 0.9;
+
+  speechSynthesis.speak(utterance);
 });
 
 // AI उत्तर का अभ्यास
@@ -142,12 +200,13 @@ checkAnswerBtn.addEventListener("click", () => {
   }
 
   taskMessage.textContent =
-    "अभ्यास पूरा हुआ। यह केवल अभ्यास है, भुगतान वाला टास्क नहीं।";
+    "अभ्यास पूरा हुआ। यह भुगतान वाला टास्क नहीं है।";
 
-  taskStatus.textContent = "अभ्यास पूरा — कोई भुगतान प्राप्त नहीं हुआ।";
+  taskStatus.textContent =
+    "अभ्यास पूरा — कोई भुगतान प्राप्त नहीं हुआ।";
 });
 
-// केवल उपयोगकर्ता द्वारा बताए वास्तविक भुगतान का रिकॉर्ड
+// कमाई का रिकॉर्ड
 function readEarnings() {
   try {
     const data = JSON.parse(
@@ -165,11 +224,11 @@ function renderEarnings() {
 
   const taskTotal = entries
     .filter(e => e.type === "task")
-    .reduce((sum, e) => sum + e.amount, 0);
+    .reduce((sum, e) => sum + Number(e.amount || 0), 0);
 
   const cartoonTotal = entries
     .filter(e => e.type === "cartoon")
-    .reduce((sum, e) => sum + e.amount, 0);
+    .reduce((sum, e) => sum + Number(e.amount || 0), 0);
 
   $("taskEarnings").textContent =
     "₹" + taskTotal.toFixed(2);
@@ -185,7 +244,8 @@ addEarningBtn.addEventListener("click", () => {
   const amount = Number(earningAmount.value);
 
   if (!Number.isFinite(amount) || amount <= 0) {
-    earningMessage.textContent = "सही भुगतान राशि दर्ज करें।";
+    earningMessage.textContent =
+      "कृपया सही भुगतान राशि दर्ज करें।";
     return;
   }
 
@@ -204,40 +264,74 @@ addEarningBtn.addEventListener("click", () => {
     );
 
     earningAmount.value = "";
+
     earningMessage.textContent =
-      "राशि आपके रिकॉर्ड में दर्ज हुई। यह बैंक भुगतान की पुष्टि नहीं है।";
+      "राशि रिकॉर्ड में दर्ज हुई। बैंक भुगतान की पुष्टि नहीं हुई है।";
 
     renderEarnings();
   } catch {
     earningMessage.textContent =
-      "रिकॉर्ड सेव नहीं हुआ। ब्राउज़र की स्टोरेज सेटिंग जाँचें।";
+      "रिकॉर्ड सेव नहीं हुआ। ब्राउज़र स्टोरेज जाँचें।";
   }
 });
 
-// वीडियो के लिए टेक्स्ट और चित्र बनाना
+// कैनवास पर हिंदी टेक्स्ट को कई लाइनों में लिखना
+function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight) {
+  const words = text.split(/\s+/);
+  const lines = [];
+  let line = "";
+
+  for (const word of words) {
+    const test = line ? line + " " + word : word;
+
+    if (ctx.measureText(test).width > maxWidth && line) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = test;
+    }
+  }
+
+  if (line) lines.push(line);
+
+  lines.slice(0, 7).forEach((item, index) => {
+    ctx.fillText(item, x, y + index * lineHeight);
+  });
+}
+
+// एक वीडियो दृश्य बनाना
 function drawVideoFrame(ctx, width, height, sentence, index, total, image) {
-  ctx.fillStyle = "#10152f";
+  ctx.clearRect(0, 0, width, height);
+
+  const background = ctx.createLinearGradient(0, 0, width, height);
+
+  background.addColorStop(0, "#10152f");
+  background.addColorStop(1, "#244b67");
+
+  ctx.fillStyle = background;
   ctx.fillRect(0, 0, width, height);
 
+  // सजावटी तारे
   ctx.fillStyle = "#ffd166";
 
   for (let i = 0; i < 35; i++) {
     const x = (i * 97 + index * 37) % width;
-    const y = (i * 173) % height;
+    const y = (i * 173 + 40) % height;
 
     ctx.beginPath();
     ctx.arc(x, y, 2.5, 0, Math.PI * 2);
     ctx.fill();
   }
 
-  ctx.fillStyle = "#ffffff";
   ctx.textAlign = "center";
-  ctx.font = "bold 38px sans-serif";
-  ctx.fillText("Sourabh AI Cartoon", width / 2, 100);
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "bold 34px sans-serif";
+
+  ctx.fillText("Sourabh AI Cartoon", width / 2, 75);
 
   if (image && image.complete && image.naturalWidth > 0) {
-    const maxWidth = width - 100;
-    const maxHeight = height * 0.42;
+    const maxWidth = width - 70;
+    const maxHeight = height * 0.43;
 
     const scale = Math.min(
       maxWidth / image.naturalWidth,
@@ -250,64 +344,49 @@ function drawVideoFrame(ctx, width, height, sentence, index, total, image) {
     ctx.drawImage(
       image,
       (width - w) / 2,
-      height * 0.19,
+      height * 0.13,
       w,
       h
     );
   } else {
-    ctx.font = "100px sans-serif";
+    // चित्र न होने पर एक सरल दृश्य संकेत
+    ctx.font = "90px sans-serif";
+    ctx.fillStyle = "#ffd166";
     ctx.fillText("🎬", width / 2, height * 0.40);
   }
 
   ctx.fillStyle = "#ffd166";
-  ctx.font = "bold 30px sans-serif";
+  ctx.font = "bold 28px sans-serif";
+
   ctx.fillText(
     "दृश्य " + (index + 1) + " / " + total,
     width / 2,
-    height * 0.68
+    height * 0.64
   );
 
   ctx.fillStyle = "#ffffff";
-  ctx.font = "bold 34px sans-serif";
+  ctx.font = "bold 30px sans-serif";
 
-  const words = sentence.split(/\s+/);
-  const lines = [];
-  let line = "";
+  drawWrappedText(
+    ctx,
+    sentence,
+    width / 2,
+    height * 0.71,
+    width - 70,
+    43
+  );
 
-  for (const word of words) {
-    const test = line ? line + " " + word : word;
+  ctx.fillStyle = "#b8d8ff";
+  ctx.font = "20px sans-serif";
 
-    if (ctx.measureText(test).width > width - 80 && line) {
-      lines.push(line);
-      line = word;
-    } else {
-      line = test;
-    }
-  }
-
-  if (line) lines.push(line);
-
-  const lineHeight = 50;
-  const startY =
-    height * 0.77 -
-    ((lines.length - 1) * lineHeight) / 2;
-
-  lines.forEach((text, i) => {
-    ctx.fillText(text, width / 2, startY + i * lineHeight);
-  });
+  ctx.fillText(
+    "Sourabh AI",
+    width / 2,
+    height - 45
+  );
 }
 
-function loadImage(url) {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-
-    img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error("चित्र लोड नहीं हुआ।"));
-    img.src = url;
-  });
-}
-
-// कहानी को WebM वीडियो में रिकॉर्ड करना
+// वीडियो बनाएँ
 makeVideoBtn.addEventListener("click", async () => {
   const story = storyInput.value.trim();
 
@@ -317,9 +396,12 @@ makeVideoBtn.addEventListener("click", async () => {
     return;
   }
 
-  if (!window.MediaRecorder || !HTMLCanvasElement.prototype.captureStream) {
+  if (
+    !window.MediaRecorder ||
+    !HTMLCanvasElement.prototype.captureStream
+  ) {
     videoStatus.textContent =
-      "आपका ब्राउज़र वीडियो रिकॉर्डिंग सपोर्ट नहीं करता।";
+      "आपका ब्राउज़र वीडियो रिकॉर्डिंग सपोर्ट नहीं करता। Chrome में कोशिश करें।";
     return;
   }
 
@@ -344,16 +426,15 @@ makeVideoBtn.addEventListener("click", async () => {
 
   makeVideoBtn.disabled = true;
   generateBtn.disabled = true;
-  speakBtn.disabled = true;
 
   let stream;
   let recorder;
-  let audioContext;
-  let voiceSource;
-  let voiceDestination;
+  let stopTimer;
+  let animationId;
 
   try {
     const canvas = document.createElement("canvas");
+
     canvas.width = 720;
     canvas.height = 1280;
 
@@ -363,41 +444,26 @@ makeVideoBtn.addEventListener("click", async () => {
       throw new Error("Canvas उपलब्ध नहीं है।");
     }
 
-    const images = [];
+    videoStatus.textContent = "चित्र लोड हो रहे हैं...";
 
-    for (const item of uploadedImages) {
-      try {
-        images.push(await loadImage(item.url));
-      } catch {
-        images.push(null);
-      }
-    }
+    const images = await Promise.all(
+      scenes.map(async (_, index) => {
+        const item = uploadedImages[index];
 
-    // हिंदी आवाज़ रिकॉर्ड करने के लिए ऑडियो ट्रैक बनाने की कोशिश
-    if (
-      includeVoice.checked &&
-      "speechSynthesis" in window &&
-      window.AudioContext &&
-      typeof speechSynthesis.speak === "function"
-    ) {
-      try {
-        audioContext = new AudioContext();
-        voiceDestination = audioContext.createMediaStreamDestination();
-        await audioContext.resume();
-      } catch (error) {
-        console.warn("Audio recording unavailable", error);
-      }
-    }
+        if (!item) return null;
+
+        try {
+          return await loadImage(item.url);
+        } catch {
+          return null;
+        }
+      })
+    );
 
     stream = canvas.captureStream(24);
 
-    if (voiceDestination) {
-      voiceDestination.stream.getAudioTracks().forEach(track => {
-        stream.addTrack(track);
-      });
-    }
-
     recorder = new MediaRecorder(stream, { mimeType });
+
     const chunks = [];
 
     recorder.ondataavailable = event => {
@@ -408,20 +474,19 @@ makeVideoBtn.addEventListener("click", async () => {
 
     const finished = new Promise((resolve, reject) => {
       recorder.onstop = resolve;
-      recorder.onerror = () => reject(new Error("रिकॉर्डिंग में त्रुटि।"));
+
+      recorder.onerror = () => {
+        reject(new Error("वीडियो रिकॉर्डिंग में त्रुटि हुई।"));
+      };
     });
 
-    recorder.start(250);
-
-    const sceneDuration = 3000;
+    const sceneDuration = 4000;
     const totalDuration = scenes.length * sceneDuration;
     const startTime = performance.now();
 
-    // आवाज़ और वीडियो की टाइमिंग एक जैसी रखने के लिए
-    // हर दृश्य पर आवाज़ चलाने की कोशिश करें।
     let currentScene = -1;
 
-    const render = now => {
+    function render(now) {
       const elapsed = now - startTime;
 
       const index = Math.min(
@@ -429,46 +494,52 @@ makeVideoBtn.addEventListener("click", async () => {
         Math.floor(elapsed / sceneDuration)
       );
 
-      drawVideoFrame(
-        ctx,
-        canvas.width,
-        canvas.height,
-        scenes[index],
-        index,
-        scenes.length,
-        images[index] || null
-      );
-
-      videoStatus.textContent =
-        "वीडियो बन रहा है: दृश्य " +
-        (index + 1) + " / " + scenes.length;
-
-      if (
-        includeVoice.checked &&
-        index !== currentScene &&
-        "speechSynthesis" in window
-      ) {
+      if (index !== currentScene) {
         currentScene = index;
-        speechSynthesis.cancel();
 
-        const speech = new SpeechSynthesisUtterance(scenes[index]);
-        speech.lang = "hi-IN";
-        speech.rate = 0.9;
+        drawVideoFrame(
+          ctx,
+          canvas.width,
+          canvas.height,
+          scenes[index],
+          index,
+          scenes.length,
+          images[index]
+        );
 
-        speechSynthesis.speak(speech);
+        videoStatus.textContent =
+          "वीडियो बन रहा है: दृश्य " +
+          (index + 1) + " / " + scenes.length;
       }
 
       if (elapsed < totalDuration) {
-        requestAnimationFrame(render);
+        animationId = requestAnimationFrame(render);
       } else {
-        speechSynthesis.cancel();
-        setTimeout(() => {
-          if (recorder.state !== "inactive") recorder.stop();
-        }, 300);
-      }
-    };
+        cancelAnimationFrame(animationId);
 
-    requestAnimationFrame(render);
+        stopTimer = setTimeout(() => {
+          if (recorder.state !== "inactive") {
+            recorder.stop();
+          }
+        }, 500);
+      }
+    }
+
+    // रिकॉर्डिंग शुरू करने से पहले पहला दृश्य दिखाएँ।
+    drawVideoFrame(
+      ctx,
+      canvas.width,
+      canvas.height,
+      scenes[0],
+      0,
+      scenes.length,
+      images[0]
+    );
+
+    recorder.start(250);
+
+    animationId = requestAnimationFrame(render);
+
     await finished;
 
     const blob = new Blob(chunks, { type: mimeType });
@@ -477,19 +548,24 @@ makeVideoBtn.addEventListener("click", async () => {
       throw new Error("वीडियो फाइल खाली है।");
     }
 
-    if (videoURL) URL.revokeObjectURL(videoURL);
+    if (videoURL) {
+      URL.revokeObjectURL(videoURL);
+    }
+
     videoURL = URL.createObjectURL(blob);
 
     videoPreview.src = videoURL;
+    videoPreview.controls = true;
     videoPreview.style.display = "block";
     videoPreview.load();
 
     downloadVideo.href = videoURL;
     downloadVideo.download = "sourabh-ai-cartoon.webm";
     downloadVideo.hidden = false;
+    downloadVideo.textContent = "📥 वीडियो डाउनलोड करें";
 
     videoStatus.textContent =
-      "वीडियो तैयार है। प्ले करके देखें और डाउनलोड करें।";
+      "वीडियो तैयार है! पहले चलाकर देखें, फिर डाउनलोड करें।";
 
     cartoonStatus.textContent =
       "WebM वीडियो तैयार — " + scenes.length + " दृश्य।";
@@ -502,25 +578,27 @@ makeVideoBtn.addEventListener("click", async () => {
     }
 
     videoStatus.textContent =
-      "वीडियो नहीं बन पाया। पेज रीफ्रेश करके फिर कोशिश करें।";
+      "वीडियो नहीं बन पाया। Chrome में पेज दोबारा खोलकर कोशिश करें।";
 
   } finally {
-    speechSynthesis.cancel();
+    if (stopTimer) {
+      clearTimeout(stopTimer);
+    }
+
+    if (animationId) {
+      cancelAnimationFrame(animationId);
+    }
 
     if (stream) {
       stream.getTracks().forEach(track => track.stop());
     }
 
-    if (audioContext) {
-      await audioContext.close().catch(() => {});
-    }
-
     makeVideoBtn.disabled = false;
     generateBtn.disabled = false;
-    speakBtn.disabled = false;
   }
 });
 
+// पेज खुलने पर पुरानी रिकॉर्ड की गई राशि दिखाएँ
 renderEarnings();
 
 console.log("Sourabh AI Cartoon Maker ready.");
