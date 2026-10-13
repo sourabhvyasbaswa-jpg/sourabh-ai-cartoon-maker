@@ -1,25 +1,27 @@
-ko<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="hi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sourabh AI Earn & Cartoon</title>
+  <meta name="theme-color" content="#172554">
+  <title>Sourabh AI - Cartoon Video Maker</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <header class="topbar">
   <h1>🚀 Sourabh AI</h1>
-  <p>AI Tasks + Cartoon Creator</p>
+  <p>Cartoon Video Maker + AI Tasks</p>
 </header>
 
 <main class="container">
 
   <section class="card">
     <h2>नमस्ते! 👋</h2>
-    <p>AI Tasks का अभ्यास करो और अपनी कार्टून कहानियाँ बनाओ।</p>
+    <p>अपनी कहानी लिखें, वीडियो बनाएँ और डाउनलोड करें।</p>
     <p class="notice">
-      यह शुरुआती प्रोटोटाइप है। अभी कोई वास्तविक भुगतान प्राप्त नहीं हुआ है।
+      वीडियो आपके ब्राउज़र में बनता है। AI चित्र और वास्तविक भुगतान
+      के लिए अलग सेवाएँ आवश्यक हो सकती हैं।
     </p>
   </section>
 
@@ -31,7 +33,6 @@ ko<!DOCTYPE html>
         <h3>🤖 AI Tasks</h3>
         <p id="taskEarnings">₹0.00</p>
       </div>
-
       <div class="earning-box">
         <h3>🎬 Cartoon</h3>
         <p id="cartoonEarnings">₹0.00</p>
@@ -39,82 +40,96 @@ ko<!DOCTYPE html>
     </div>
 
     <div class="total-box">
-      <h3>कुल दर्ज कमाई</h3>
+      <h3>कुल सत्यापित कमाई</h3>
       <p id="totalEarnings">₹0.00</p>
     </div>
 
     <p class="notice">
-      केवल सत्यापित वास्तविक भुगतान ही कमाई में जोड़े जाने चाहिए।
+      अभी कोई भुगतान अपने आप प्राप्त नहीं होता। केवल वास्तविक
+      प्राप्त भुगतान ही कमाई में जोड़ें।
     </p>
+
+    <label for="earningAmount">प्राप्त भुगतान की राशि (₹)</label>
+    <input id="earningAmount" type="number" min="0.01"
+      step="0.01" placeholder="जैसे 100">
+
+    <label for="earningType">भुगतान किस काम से मिला?</label>
+    <select id="earningType">
+      <option value="cartoon">कार्टून वीडियो</option>
+      <option value="task">AI Task</option>
+    </select>
+
+    <button id="addEarningBtn">प्राप्त भुगतान दर्ज करें</button>
+    <p id="earningMessage" aria-live="polite"></p>
+  </section>
+
+  <section class="card">
+    <h2>🎬 Cartoon Video Maker</h2>
+
+    <button id="dinosaurBtn" type="button">
+      🦖 डायनासोर की कहानी डालें
+    </button>
+
+    <label for="storyInput">अपनी कहानी लिखें:</label>
+    <textarea id="storyInput" rows="6"
+      placeholder="एक जंगल में एक लड़का डायनासोर से मिला..."></textarea>
+
+    <label for="imageUpload">अपने कार्टून चित्र जोड़ें (वैकल्पिक)</label>
+    <input id="imageUpload" type="file"
+      accept="image/*" multiple>
+
+    <p class="notice">
+      अपने चित्र जोड़ सकते हैं। अभी ऐप खुद AI से नए चित्र नहीं बनाता।
+    </p>
+
+    <button id="generateBtn">📝 कहानी के दृश्य बनाएँ</button>
+    <div id="sceneList" class="scene-list"></div>
+
+    <button id="speakBtn" class="secondary">
+      🔊 कहानी सुनें
+    </button>
+
+    <label class="check-label">
+      <input id="includeVoice" type="checkbox" checked>
+      वीडियो में उपलब्ध हिंदी आवाज़ शामिल करने की कोशिश करें
+    </label>
+
+    <button id="makeVideoBtn">🎥 वीडियो बनाएँ और डाउनलोड करें</button>
+    <p id="videoStatus" aria-live="polite">
+      वीडियो बनाने के लिए कहानी लिखें।
+    </p>
+
+    <video id="videoPreview" controls playsinline></video>
+
+    <a id="downloadVideo" class="download-link" hidden>
+      📥 वीडियो डाउनलोड करें
+    </a>
   </section>
 
   <section class="card">
     <h2>🤖 AI Task Practice</h2>
-    <p>AI के जवाब की गुणवत्ता जाँचने का अभ्यास करो।</p>
+    <p>AI के जवाब की गुणवत्ता जाँचने का अभ्यास करें।</p>
 
-    <label for="aiAnswer">AI का जवाब लिखो:</label>
+    <label for="aiAnswer">AI का जवाब लिखें:</label>
     <textarea id="aiAnswer" rows="4"
-      placeholder="यहाँ AI का जवाब लिखें..."></textarea>
+      placeholder="यहाँ जवाब लिखें..."></textarea>
 
-    <button id="checkAnswerBtn">जाँच का अभ्यास करें</button>
-
+    <button id="checkAnswerBtn">अभ्यास पूरा करें</button>
     <p id="taskMessage" aria-live="polite">
-      अभ्यास शुरू करने के लिए जवाब लिखो।
+      यह अभ्यास है, भुगतान वाला टास्क नहीं।
     </p>
+    <p id="taskStatus">अभी कोई अभ्यास पूरा नहीं हुआ।</p>
   </section>
 
   <section class="card">
-    <h2>🎬 Cartoon Maker</h2>
-
-    <button id="dinosaurBtn" type="button">
-  🦖 डायनासोर और आदमी की कहानी डालो
-    </button>
-    <label for="storyInput">अपनी कहानी लिखो:</label>
-    <textarea id="storyInput" rows="5"
-      placeholder="एक जंगल में हाथी और बंदर दोस्त थे..."></textarea>
-
-    <button id="generateBtn">🎨 कहानी के दृश्य बनाओ</button>
-    <div id="sceneList" class="scene-list"></div>
-    <button id="makeVideoBtn" type="button">
-  🎬 वीडियो बनाओ और डाउनलोड करो
-</button>
-
-<p id="videoStatus" aria-live="polite">
-  पहले कहानी लिखो, फिर वीडियो बनाओ।
-</p>
-
-<canvas
-  id="videoCanvas"
-  width="720"
-  height="1280"
-  style="display:none"
-></canvas>
-
-<video
-  id="videoPreview"
-  controls
-  playsinline
-  style="display:none; width:100%; margin-top:12px"
-></video>
-
-    <button id="speakBtn" class="secondary">🔊 कहानी सुनो</button>
-
-    <p class="notice">
-      अभी कहानी के टेक्स्ट दृश्य बनेंगे। वास्तविक AI चित्र और वीडियो के लिए
-      बाहरी AI सेवा जोड़नी होगी।
-    </p>
+    <h2>📌 स्थिति</h2>
+    <p id="cartoonStatus">अभी कोई वीडियो नहीं बना।</p>
   </section>
-
-        <section class="card">
-          h2>📌 Task Status</h2>
-      <p id="taskStatus">अभी कोई अभ्यास पूरा नहीं हुआ।</p>
-      <p id="cartoonStatus">अभी कोई दृश्य नहीं बना।</p>
-</section>
 
 </main>
 
 <footer class="footer">
-  <p>© Sourabh AI Earn & Cartoon | Learning Prototype</p>
+  <p>© Sourabh AI | Cartoon Video Maker</p>
 </footer>
 
 <script src="app.js"></script>
