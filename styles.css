@@ -18,7 +18,7 @@ body {
 
 .topbar h1 {
   margin: 0 0 8px;
-  font-size: 27px;
+  font-size: 28px;
 }
 
 .container {
@@ -58,6 +58,7 @@ h2 {
   color: #6d28d9;
   font-size: 24px;
   font-weight: bold;
+  overflow-wrap: anywhere;
 }
 
 .total-box {
@@ -80,13 +81,20 @@ label {
   margin: 15px 0 8px;
 }
 
-textarea {
+textarea,
+input[type="number"],
+select,
+input[type="file"] {
   width: 100%;
   padding: 13px;
   border: 1px solid #cbd5e1;
   border-radius: 10px;
   font-size: 16px;
   font-family: inherit;
+  background: white;
+}
+
+textarea {
   resize: vertical;
 }
 
@@ -101,6 +109,11 @@ button {
   background: #6d28d9;
   color: white;
   cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: wait;
 }
 
 button.secondary {
@@ -126,7 +139,49 @@ button.secondary {
   line-height: 1.6;
 }
 
-footer {
+.scene img {
+  display: block;
+  max-width: 100%;
+  max-height: 320px;
+  object-fit: contain;
+  margin: 10px auto;
+  border-radius: 10px;
+}
+
+.check-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1.5;
+}
+
+.check-label input {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+#videoPreview {
+  display: none;
+  width: 100%;
+  margin-top: 15px;
+  border-radius: 10px;
+  background: #111;
+}
+
+.download-link {
+  display: block;
+  margin-top: 12px;
+  padding: 14px;
+  text-align: center;
+  color: white;
+  background: #166534;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.footer {
   text-align: center;
   padding: 20px;
   color: #64748b;
@@ -140,5 +195,9 @@ footer {
 
   .card {
     padding: 15px;
+  }
+
+  .earning-box p {
+    font-size: 20px;
   }
   }
