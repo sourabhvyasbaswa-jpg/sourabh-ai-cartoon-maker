@@ -75,6 +75,27 @@ ko<!DOCTYPE html>
 
     <button id="generateBtn">🎨 कहानी के दृश्य बनाओ</button>
     <div id="sceneList" class="scene-list"></div>
+    <button id="makeVideoBtn" type="button">
+  🎬 वीडियो बनाओ और डाउनलोड करो
+</button>
+
+<p id="videoStatus" aria-live="polite">
+  पहले कहानी लिखो, फिर वीडियो बनाओ।
+</p>
+
+<canvas
+  id="videoCanvas"
+  width="720"
+  height="1280"
+  style="display:none"
+></canvas>
+
+<video
+  id="videoPreview"
+  controls
+  playsinline
+  style="display:none; width:100%; margin-top:12px"
+></video>
 
     <button id="speakBtn" class="secondary">🔊 कहानी सुनो</button>
 
